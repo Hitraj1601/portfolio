@@ -1263,183 +1263,242 @@
       font-size: 14px;
     }
 
-    /* ---------- Contact ---------- */
+    /* ---------- Contact (Redesigned) ---------- */
     .contact-container {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
-    /* Unified glassmorphic container */
-    .contact-glass-container {
-      background: radial-gradient(ellipse at 50% 0%, rgba(198, 161, 91, 0.06) 0%, rgba(7, 7, 10, 0.7) 70%);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      padding: 64px 56px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(198, 161, 91, 0.12);
+    /* Hero availability badge */
+    .contact-avail-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 20px;
+      border-radius: 100px;
+      border: 1px solid rgba(198, 161, 91, 0.35);
+      background: rgba(198, 161, 91, 0.07);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--gold-bright);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .contact-avail-badge .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6);
+      animation: pulse-green 2s infinite;
+    }
+    @keyframes pulse-green {
+      0%   { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6); }
+      70%  { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+    }
+
+    /* Main wrapper */
+    .contact-main-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .contact-main-wrap { grid-template-columns: 1fr; gap: 36px; }
+    }
+
+    /* Left: big text block */
+    .contact-left-text h3 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin: 0 0 20px;
+      background: linear-gradient(135deg, #ffffff 0%, var(--gold-bright) 60%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .contact-left-text p {
+      color: var(--ink-dim);
+      font-size: 16px;
+      line-height: 1.75;
+      margin: 0 0 36px;
+      max-width: 420px;
+    }
+
+    /* Info cards stacked on the left */
+    .contact-info-list {
       display: flex;
       flex-direction: column;
+      gap: 16px;
+    }
+    .contact-info-item {
+      display: flex;
       align-items: center;
-      gap: 52px;
-    }
-
-    @media (max-width: 768px) {
-      .contact-glass-container {
-        padding: 44px 28px;
-        gap: 36px;
-      }
-    }
-
-    /* Cards grid */
-    .contact-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      width: 100%;
-    }
-
-    @media (max-width: 760px) {
-      .contact-cards-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-    }
-
-    .contact-premium-card {
-      background: rgba(14, 14, 18, 0.55);
+      gap: 20px;
+      padding: 20px 24px;
+      border-radius: 16px;
       border: 1px solid var(--line-strong);
-      border-radius: 20px;
-      padding: 36px 24px;
+      background: rgba(14, 14, 18, 0.55);
+      backdrop-filter: blur(10px);
+      transition: border-color 0.35s var(--ease), box-shadow 0.35s var(--ease), transform 0.35s var(--ease), background 0.35s var(--ease);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+    }
+    .contact-info-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      border-radius: 3px 0 0 3px;
+      background: linear-gradient(to bottom, var(--gold-bright), var(--gold));
+      opacity: 0;
+      transition: opacity 0.35s var(--ease);
+    }
+    .contact-info-item:hover {
+      border-color: rgba(198, 161, 91, 0.5);
+      background: rgba(20, 20, 26, 0.85);
+      box-shadow: 0 12px 40px rgba(198, 161, 91, 0.1), inset 0 0 0 1px rgba(198, 161, 91, 0.08);
+      transform: translateX(6px);
+    }
+    .contact-info-item:hover::before { opacity: 1; }
+    .contact-info-icon {
+      flex-shrink: 0;
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      background: var(--gold-soft);
+      color: var(--gold-bright);
+      display: flex;
+      align-items: center; justify-content: center;
+      transition: background 0.35s var(--ease), transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+    }
+    .contact-info-item:hover .contact-info-icon {
+      background: var(--gold);
+      color: #07070a;
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(198, 161, 91, 0.35);
+    }
+    .contact-info-icon svg { width: 22px; height: 22px; }
+    .contact-info-text {
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .contact-info-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-faint);
+    }
+    .contact-info-value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      transition: color 0.25s var(--ease);
+      text-decoration: none;
+    }
+    a.contact-info-item:hover .contact-info-value { color: var(--gold-bright); }
+
+    /* Right: big decorative card */
+    .contact-right-card {
+      background: radial-gradient(ellipse at 30% 20%, rgba(198, 161, 91, 0.1) 0%, rgba(7, 7, 10, 0.8) 65%);
+      border: 1px solid rgba(198, 161, 91, 0.2);
+      border-radius: 28px;
+      padding: 52px 44px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 0;
-      transition: border-color 0.4s var(--ease), transform 0.4s var(--ease), box-shadow 0.4s var(--ease), background 0.4s var(--ease);
+      gap: 32px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(198,161,91,0.15);
       position: relative;
       overflow: hidden;
     }
-
-    .contact-premium-card::before {
+    .contact-right-card::after {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(198, 161, 91, 0.06) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.4s var(--ease);
+      top: -80px; right: -80px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(198,161,91,0.12) 0%, transparent 70%);
       pointer-events: none;
     }
-
-    .contact-premium-card:hover {
-      border-color: var(--gold);
-      transform: translateY(-8px);
-      box-shadow: 0 20px 50px rgba(198, 161, 91, 0.1);
-      background: rgba(19, 19, 23, 0.85);
+    .contact-right-card .crc-avatar {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      border: 2px solid rgba(198, 161, 91, 0.4);
+      box-shadow: 0 0 0 8px rgba(198,161,91,0.06);
+      object-fit: cover;
     }
-
-    .contact-premium-card:hover::before {
-      opacity: 1;
-    }
-
-    .contact-icon-wrapper {
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      background: var(--gold-soft);
-      color: var(--gold-bright);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 22px;
-      transition: background 0.4s var(--ease), color 0.4s var(--ease), transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
-      position: relative;
-      z-index: 1;
-    }
-
-    .contact-premium-card:hover .contact-icon-wrapper {
-      background: var(--gold);
-      color: #07070a;
-      transform: scale(1.1);
-      box-shadow: 0 8px 24px rgba(198, 161, 91, 0.3);
-    }
-
-    .contact-icon-wrapper svg {
-      width: 24px;
-      height: 24px;
-    }
-
-    .contact-premium-card span {
-      display: block;
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--ink-faint);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .contact-premium-card p,
-    .contact-premium-card a {
-      font-size: 15px;
+    .contact-right-card .crc-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       color: var(--ink);
-      font-weight: 500;
       margin: 0;
-      transition: color 0.25s var(--ease);
-      position: relative;
-      z-index: 1;
     }
-
-    .contact-premium-card a:hover {
+    .contact-right-card .crc-role {
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
       color: var(--gold-bright);
+      margin: -18px 0 0;
     }
-
-    /* Divider line */
-    .contact-divider {
+    .contact-right-card .crc-divider {
       width: 100%;
       height: 1px;
-      background: linear-gradient(to right, transparent, var(--line-strong) 30%, var(--line-strong) 70%, transparent);
+      background: linear-gradient(to right, transparent, rgba(198,161,91,0.3) 40%, rgba(198,161,91,0.3) 60%, transparent);
+    }
+    .contact-right-card .crc-desc {
+      font-size: 14px;
+      color: var(--ink-dim);
+      line-height: 1.7;
+      margin: 0;
     }
 
-    /* Social links */
+    /* Socials row (right card) */
     .contact-socials-row {
       display: flex;
-      gap: 20px;
+      gap: 14px;
       justify-content: center;
     }
-
     .contact-socials-row a {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
+      width: 48px; height: 48px;
+      border-radius: 14px;
       border: 1px solid var(--line-strong);
       color: var(--ink-dim);
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: center; justify-content: center;
       transition: all 0.35s var(--ease);
       position: relative;
+      overflow: hidden;
+      text-decoration: none;
     }
-
-    .contact-socials-row a::after {
+    .contact-socials-row a::before {
       content: '';
       position: absolute;
-      inset: -1px;
-      border-radius: 50%;
-      background: conic-gradient(var(--gold) 0deg, transparent 0deg);
+      inset: 0;
+      background: linear-gradient(135deg, rgba(198,161,91,0.18) 0%, transparent 70%);
       opacity: 0;
       transition: opacity 0.35s var(--ease);
-      z-index: -1;
     }
-
     .contact-socials-row a:hover {
       border-color: var(--gold);
       color: var(--gold);
-      transform: translateY(-4px);
-      background: var(--gold-soft);
-      box-shadow: 0 8px 24px rgba(198, 161, 91, 0.2);
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 10px 28px rgba(198,161,91,0.22);
+    }
+    .contact-socials-row a:hover::before { opacity: 1; }
+
+    @media (max-width: 480px) {
+      .contact-right-card { padding: 40px 24px; }
+      .contact-info-item { padding: 16px 18px; }
     }
 
     /* ---------- Footer ---------- */
@@ -2219,7 +2278,7 @@
           </div>
         </div>
         <div class="about-me-details">
-          <p class="about-me-lead">I am a pre-final year Computer Science & Engineering student at MSU Baroda, specializing in building high-quality, modern web applications.</p>
+          <p class="about-me-lead">I am a final year Computer Science & Engineering student at MSU Baroda, specializing in building high-quality, modern web applications.</p>
           <p>My technical journey focuses heavily on JavaScript/TypeScript, React, Node.js, and Express, alongside SQL/NoSQL databases like PostgreSQL and MongoDB. I enjoy solving complex algorithm problems and creating scalable SaaS architectures, real-time products with Socket.IO, and robust APIs secured by JWT authentication.</p>
           <p>Driven by curiosity and a commitment to code quality, I design clean interfaces, write tests, optimize database queries, and use Docker for reproducible containerized deployments. I'm always looking for challenges that help me learn and grow as a software engineer.</p>
           <div class="about-me-key-info">
@@ -2548,12 +2607,12 @@
           <div class="eyebrow">EDUCATION</div>
           <h2>Education</h2>
         </div>
-        <p>Pre-final year computer science student building production-grade software alongside coursework.</p>
+        <p>Final year computer science student building production-grade software alongside coursework.</p>
       </div>
 
       <div class="education-grid reveal">
         <div class="education-text">
-          <p>I'm a full-stack developer based in Vadodara, India, currently in my pre-final year of a B.Tech in Computer
+          <p>I'm a full-stack developer based in Vadodara, India, currently in my final year of a B.Tech in Computer
             Science &amp; Engineering. My work centers on the MERN stack, real-time systems built with Socket.IO, and AI
             integrations using the OpenAI API — with a strong problem-solving foundation from data structures,
             algorithms, and RESTful API design.</p>
@@ -2623,67 +2682,102 @@
   <section id="contact">
     <div class="wrap">
       <div class="contact-container reveal">
-        <div class="section-head reveal" style="text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 50px;">
+
+        <!-- Section header -->
+        <div class="section-head reveal" style="text-align:center;display:flex;flex-direction:column;align-items:center;margin-bottom:56px;">
           <div class="eyebrow">GET IN TOUCH</div>
-          <h2>Contact</h2>
-          <p style="margin: 14px auto 0; text-align: center; max-width: 480px;">Have a project in mind, a role to discuss, or just want to say hello? Reach out — I'd love to connect.</p>
+          <h2>Let's Connect</h2>
+          <div class="contact-avail-badge"><span class="pulse-dot"></span>Available for opportunities</div>
         </div>
 
-        <div class="contact-glass-container reveal">
-          <!-- Three premium cards -->
-          <div class="contact-cards-grid">
-            <div class="contact-premium-card">
-              <div class="contact-icon-wrapper">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
-              </div>
-              <span>LOCATION</span>
-              <p>Vadodara, Gujarat, India</p>
-            </div>
+        <!-- Two-column layout -->
+        <div class="contact-main-wrap reveal">
 
-            <div class="contact-premium-card">
-              <div class="contact-icon-wrapper">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-              </div>
-              <span>PHONE</span>
-              <a href="tel:+919313209807">+91 93132 09807</a>
-            </div>
+          <!-- LEFT: text + info items -->
+          <div class="contact-left-text">
+            <h3>Have something in mind? Let's talk.</h3>
+            <p>Whether it's a freelance project, a full-time role, or just a hello — my inbox is always open. I reply within 24 hours.</p>
 
-            <div class="contact-premium-card">
-              <div class="contact-icon-wrapper">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                  <polyline points="22,6 12,13 2,6" />
-                </svg>
+            <div class="contact-info-list">
+
+              <!-- Location -->
+              <div class="contact-info-item">
+                <div class="contact-info-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </div>
+                <div class="contact-info-text">
+                  <span class="contact-info-label">Location</span>
+                  <span class="contact-info-value">Vadodara, Gujarat, India</span>
+                </div>
               </div>
-              <span>EMAIL</span>
-              <a href="mailto:hitrajsinhchavda1618@gmail.com">hitrajsinhchavda1618@gmail.com</a>
+
+              <!-- Phone -->
+              <a href="tel:+919313209807" class="contact-info-item">
+                <div class="contact-info-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                </div>
+                <div class="contact-info-text">
+                  <span class="contact-info-label">Phone</span>
+                  <span class="contact-info-value">+91 93132 09807</span>
+                </div>
+              </a>
+
+              <!-- Email -->
+              <a href="mailto:hitrajsinhchavda1618@gmail.com" class="contact-info-item">
+                <div class="contact-info-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                </div>
+                <div class="contact-info-text">
+                  <span class="contact-info-label">Email</span>
+                  <span class="contact-info-value">hitrajsinhchavda1618@gmail.com</span>
+                </div>
+              </a>
+
             </div>
           </div>
 
-          <div class="contact-divider"></div>
+          <!-- RIGHT: decorative profile card -->
+          <div class="contact-right-card">
+            <img src="./profile.jpg" alt="Hitraj Chavda" class="crc-avatar">
+            <p class="crc-name">Hitraj Chavda</p>
+            <p class="crc-role">Full-Stack Developer</p>
+            <div class="crc-divider"></div>
+            <p class="crc-desc">Final year CS student at MSU Baroda building scalable web apps, real-time systems &amp; elegant UIs. Open to exciting roles and collaborations.</p>
 
-          <!-- Social links -->
-          <div class="contact-socials-row">
-            <a href="#" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-1.04-.01-1.9-2.78.62-3.37-1.22-3.37-1.22-.46-1.2-1.11-1.52-1.11-1.52-.9-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.57 2.34 1.11 2.91.85.09-.67.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"
-                  fill="currentColor" />
-              </svg></a>
-            <a href="#" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21H18v-5.6c0-1.34-.02-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97V21H10V9Z"
-                  fill="currentColor" />
-              </svg></a>
-            <a href="#" aria-label="LeetCode"><svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="m9 7-5 5 5 5M15 7l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-                  stroke-linejoin="round" />
-              </svg></a>
+            <!-- Socials -->
+            <div class="contact-socials-row">
+              <a href="#" aria-label="GitHub">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-1.04-.01-1.9-2.78.62-3.37-1.22-3.37-1.22-.46-1.2-1.11-1.52-1.11-1.52-.9-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.57 2.34 1.11 2.91.85.09-.67.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z" fill="currentColor"/>
+                </svg>
+              </a>
+              <a href="#" aria-label="LinkedIn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21H18v-5.6c0-1.34-.02-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97V21H10V9Z" fill="currentColor"/>
+                </svg>
+              </a>
+              <a href="#" aria-label="LeetCode">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="m9 7-5 5 5 5M15 7l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <a href="mailto:hitrajsinhchavda1618@gmail.com" aria-label="Email">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </a>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
