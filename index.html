@@ -66,6 +66,18 @@
       font-family: var(--body);
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ---------- Dynamic Canvas Background ---------- */
+    #bgCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      pointer-events: none;
     }
 
     img,
@@ -2723,6 +2735,7 @@
 
 <body>
 
+  <canvas id="bgCanvas"></canvas>
   <div class="grain"></div>
 
   <div class="social-rail">
@@ -3258,10 +3271,11 @@
             <div class="hackathon-project">PLM Version Control System</div>
             <p class="hackathon-desc">An automated Product Lifecycle Management (PLM) version control solution built on Odoo — streamlining engineering bill of materials (BOM), revision history, ECO approvals &amp; product lifecycle workflows.</p>
             <div class="hackathon-tech-tags">
-              <span>Odoo Framework</span>
-              <span>Python</span>
               <span>PostgreSQL</span>
-              <span>XML / QWeb</span>
+              <span>React</span>
+              <span>Node.js</span>
+              <span>JWT</span>
+              <span>REST API</span>
             </div>
           </div>
           <div class="hackathon-footer">
@@ -3274,14 +3288,6 @@
                   <line x1="10" y1="14" x2="21" y2="3"/>
                 </svg>
                 <span>Certificate</span>
-              </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" class="cert-btn" id="hackathon-2-video">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/>
-                  <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-                <span>Video Demo</span>
               </a>
             </div>
           </div>
@@ -3633,6 +3639,122 @@
         gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' } });
       });
     }
+
+    /* ---------- Dynamic Interactive Animated Tech Wave Grid Background ---------- */
+    (function initDynamicBg() {
+      const canvas = document.getElementById('bgCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      let mouse = { x: width / 2, y: height / 2, targetX: width / 2, targetY: height / 2 };
+
+      window.addEventListener('mousemove', (e) => {
+        mouse.targetX = e.clientX;
+        mouse.targetY = e.clientY;
+      }, { passive: true });
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }, { passive: true });
+
+      let time = 0;
+      const gridSpacing = 48;
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Smooth mouse position damping
+        mouse.x += (mouse.targetX - mouse.x) * 0.05;
+        mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+        time += 0.016;
+
+        const cols = Math.ceil(width / gridSpacing) + 2;
+        const rows = Math.ceil(height / gridSpacing) + 2;
+
+        const grid = [];
+
+        for (let i = 0; i < cols; i++) {
+          grid[i] = [];
+          for (let j = 0; j < rows; j++) {
+            const baseX = i * gridSpacing - 24;
+            const baseY = j * gridSpacing - 24;
+
+            // Sine & Cosine wave displacements
+            const waveX = Math.sin(time + i * 0.3 + j * 0.2) * 9;
+            const waveY = Math.cos(time * 0.85 + i * 0.2 + j * 0.35) * 9;
+
+            // Mouse interaction repulsion/glow
+            const dx = mouse.x - baseX;
+            const dy = mouse.y - baseY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const maxMouseDist = 200;
+            let mouseOffset = 0;
+
+            if (dist < maxMouseDist) {
+              mouseOffset = (1 - dist / maxMouseDist) * 22;
+            }
+
+            const angle = Math.atan2(dy, dx);
+            const posX = baseX + waveX - Math.cos(angle) * mouseOffset;
+            const posY = baseY + waveY - Math.sin(angle) * mouseOffset;
+
+            grid[i][j] = { x: posX, y: posY, distToMouse: dist };
+          }
+        }
+
+        // Render grid lines & intersection nodes
+        for (let i = 0; i < cols; i++) {
+          for (let j = 0; j < rows; j++) {
+            const p = grid[i][j];
+
+            // Right line connection
+            if (i < cols - 1) {
+              const pRight = grid[i + 1][j];
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(pRight.x, pRight.y);
+              const alpha = Math.max(0.015, 0.085 - p.distToMouse / 2800);
+              ctx.strokeStyle = `rgba(198, 161, 91, ${alpha})`;
+              ctx.lineWidth = 0.7;
+              ctx.stroke();
+            }
+
+            // Bottom line connection
+            if (j < rows - 1) {
+              const pDown = grid[i][j + 1];
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(pDown.x, pDown.y);
+              const alpha = Math.max(0.015, 0.085 - p.distToMouse / 2800);
+              ctx.strokeStyle = `rgba(198, 161, 91, ${alpha})`;
+              ctx.lineWidth = 0.7;
+              ctx.stroke();
+            }
+
+            // Draw node dots at alternating intersections
+            if ((i + j) % 2 === 0) {
+              const isClose = p.distToMouse < 180;
+              const nodeAlpha = isClose ? Math.max(0.2, 0.6 - p.distToMouse / 350) : 0.22;
+              const radius = isClose ? 2.6 : 1.5;
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+              ctx.fillStyle = isClose ? `rgba(224, 189, 120, ${nodeAlpha})` : `rgba(198, 161, 91, ${nodeAlpha})`;
+              ctx.fill();
+            }
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    })();
   </script>
 </body>
 
